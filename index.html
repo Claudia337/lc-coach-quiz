@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LC Coach Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      max-width: 400px;
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 1rem;
+    }
+    button {
+      margin: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container" id="quiz">
+    <h2>Introduceți numele LC-ului:</h2>
+    <input type="text" id="lcInput" placeholder="Ex: BU" />
+    <button onclick="startQuiz()">Start</button>
+  </div>
+
+  <script>
+    const questions = [
+      "AIESEC este o organizație non-profit.",
+      "Un exchange durează minim 1 an.",
+      "Romania are peste 10 LC-uri AIESEC.",
+      "Coach-ul este ales prin tragere la sorți.",
+      "LC înseamnă Local Committee."
+    ];
+
+    const answers = [true, false, true, false, true];
+
+    const coachMapping = {
+      "BU": "Kira",
+      "BV": "Emi",
+      "CJ": "Hanin",
+      "CR": "Cristi",
+      "GL": "Kira",
+      "IS": "Ada",
+      "OR": "Pietrino",
+      "SB": "Eli",
+      "TM": "Claudia",
+      "UB": "Cosmin"
+    };
+
+    let currentQuestion = 0;
+    let score = 0;
+    let lc = "";
+
+    function startQuiz() {
+      lc = document.getElementById("lcInput").value.toUpperCase();
+      if (!coachMapping[lc]) {
+        alert("LC necunoscut. Te rog introdu un LC valid (ex: BU, CJ, TM).");
+        return;
+      }
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const quiz = document.getElementById("quiz");
+      if (currentQuestion < questions.length) {
+        quiz.innerHTML = `
+          <h2>Întrebarea ${currentQuestion + 1}</h2>
+          <p class="question">${questions[currentQuestion]}</p>
+          <button onclick="answer(true)">Adevărat</button>
+          <button onclick="answer(false)">Fals</button>
+        `;
+      } else {
+        showResult();
+      }
+    }
+
+    function answer(userAnswer) {
+      if (userAnswer === answers[currentQuestion]) {
+        score++;
+      }
+      currentQuestion++;
+      showQuestion();
+    }
+
+    function showResult() {
+      const coach = coachMapping[lc];
+      document.getElementById("quiz").innerHTML = `
+        <h2>Quiz completat!</h2>
+        <p>Ai răspuns corect la ${score} din 5 întrebări.</p>
+        <p><strong>Coach-ul pentru LC ${lc} este ${coach}! 🎉</strong></p>
+      `;
+    }
+  </script>
+</body>
+</html>
